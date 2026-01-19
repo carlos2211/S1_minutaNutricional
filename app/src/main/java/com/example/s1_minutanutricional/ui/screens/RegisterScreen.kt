@@ -71,7 +71,7 @@ fun RegisterScreen(navController: NavController) {
                 // Solo visual por ahora
                 navController.popBackStack()
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().height(64.dp),
         ) {
             Text("Crear cuenta")
         }

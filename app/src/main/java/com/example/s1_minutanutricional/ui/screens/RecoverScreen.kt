@@ -43,9 +43,9 @@ fun RecoverScreen(navController: NavController) {
                 // Solo visual por ahora
                 navController.popBackStack()
             },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth().height(64.dp),
         ) {
-            Text("Enviar")
+            Text("Enviar",)
         }
 
         TextButton(

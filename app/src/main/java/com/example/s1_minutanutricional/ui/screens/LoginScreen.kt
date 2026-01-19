@@ -19,6 +19,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.graphics.Color
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
+import androidx.compose.ui.unit.sp
+import com.example.s1_minutanutricional.data.UsuariosData
 
 
 
@@ -55,6 +57,8 @@ fun LoginScreen(navController: NavController) {
             shape = RoundedCornerShape(16.dp),
             elevation = CardDefaults.cardElevation(defaultElevation = 8.dp)
         ) {
+            var errorMessage by remember { mutableStateOf("") }
+
             Column(
                 modifier = Modifier
                     .padding(24.dp)
@@ -82,24 +86,47 @@ fun LoginScreen(navController: NavController) {
                 )
 
                 Button(
-                    onClick = { navController.navigate("menu") },
-                    modifier = Modifier.fillMaxWidth()
+                    onClick = {
+                        if (UsuariosData.validarLogin(email, password)) {
+                            navController.navigate("menu") {
+                                popUpTo("login") { inclusive = true }
+                            }
+                        } else {
+                            errorMessage = "Correo o contraseña incorrectos"
+                        }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(56.dp)
                 ) {
-                    Text("Ingresar")
+                    Text(
+                        text = "Ingresar",
+                        style = MaterialTheme.typography.labelLarge
+                    )
                 }
+
+                if (errorMessage.isNotEmpty()) {
+                    Text(
+                        text = errorMessage,
+                        color = Color.Red,
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                }
+
+
 
                 TextButton(
                     onClick = { navController.navigate("register") },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
-                    Text("Registrarse")
+                    Text("Registrarse",fontSize = 26.sp)
                 }
 
                 TextButton(
                     onClick = { navController.navigate("recover") },
                     modifier = Modifier.align(Alignment.CenterHorizontally)
                 ) {
-                    Text("¿Olvidó su contraseña?")
+                    Text("¿Olvidó su contraseña?",fontSize = 26.sp)
                 }
             }
         }

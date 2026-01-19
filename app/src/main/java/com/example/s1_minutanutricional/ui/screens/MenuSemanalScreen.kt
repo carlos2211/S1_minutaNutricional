@@ -1,72 +1,110 @@
 package com.example.s1_minutanutricional.ui.screens
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
+import com.example.s1_minutanutricional.R
 
 @Composable
 fun MenuSemanalScreen(navController: NavController) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(50.dp)
-            .padding(top = 50.dp),
+    Box(modifier = Modifier.fillMaxSize()) {
 
-        verticalArrangement = Arrangement.spacedBy(16.dp)
-    ) {
-        Text(
-            text = "Minuta semanal",
-            style = MaterialTheme.typography.headlineMedium
+
+        Image(
+            painter = painterResource(id = R.drawable.fondo_home),
+            contentDescription = null,
+            modifier = Modifier.fillMaxSize(),
+            contentScale = ContentScale.Crop
         )
 
-        Button(
-            onClick = { navController.navigate("receta/Lunes") },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Lunes")
-        }
 
-        Button(
-            onClick = { navController.navigate("receta/Martes") },
-            modifier = Modifier.fillMaxWidth()
+        Card(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(24.dp),
+            colors = CardDefaults.cardColors(
+                containerColor = Color.White.copy(alpha = 0.95f)
+            )
         ) {
-            Text("Martes")
-        }
 
-        Button(
-            onClick = { navController.navigate("receta/Miércoles") },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Miércoles")
-        }
-        Button(
-            onClick = { navController.navigate("receta/Jueves") },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Jueves")
-        }
-        Button(
-            onClick = { navController.navigate("receta/Viernes") },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Viernes")
-        }
-        Button(
-            onClick = { navController.navigate("receta/Sábado") },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Sábado")
-        }
-        Button(
-            onClick = { navController.navigate("receta/Domingo") },
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text("Domingo")
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(24.dp),
+                verticalArrangement = Arrangement.spacedBy(16.dp)
+            ) {
+
+
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(bottom = 16.dp),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(
+                        text = "Minuta semanal",
+                        style = MaterialTheme.typography.headlineMedium,
+                        modifier = Modifier.weight(1f),
+                        color = Color.Black
+                    )
+
+                    Button(
+                        onClick = {
+                            navController.navigate("login") {
+                                popUpTo("menu") { inclusive = true }
+                            }
+                        },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = Color(0xFFD32F2F) // Rojo accesible
+                        ),
+                        modifier = Modifier
+                            .height(48.dp)
+                    ) {
+                        Text(
+                            text = "Cerrar sesión",
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.White
+                        )
+                    }
+
+                }
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                // Botones de días
+                val dias = listOf(
+                    "Lunes", "Martes", "Miércoles",
+                    "Jueves", "Viernes", "Sábado", "Domingo"
+                )
+
+                dias.forEach { dia ->
+                    Button(
+                        onClick = { navController.navigate("receta/$dia") },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(64.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.primary
+                        )
+                    ) {
+                        Text(
+                            text = dia,
+                            style = MaterialTheme.typography.labelLarge,
+                            color = Color.White
+                        )
+                    }
+                }
+            }
         }
     }
 }

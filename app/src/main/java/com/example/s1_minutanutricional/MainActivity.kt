@@ -10,6 +10,7 @@ import androidx.compose.ui.Modifier
 import com.example.s1_minutanutricional.ui.navigation.AppNavigation
 import com.example.s1_minutanutricional.ui.theme.S1MinutaNutricionalTheme
 
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
