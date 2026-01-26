@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.s1_minutanutricional.R
+import com.example.s1_minutanutricional.ui.components.BotonPrincipal
+
 
 @Composable
 fun MenuSemanalScreen(navController: NavController) {
@@ -24,7 +26,8 @@ fun MenuSemanalScreen(navController: NavController) {
             painter = painterResource(id = R.drawable.fondo_home),
             contentDescription = null,
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            alpha = 0.25f
         )
 
 
@@ -88,21 +91,11 @@ fun MenuSemanalScreen(navController: NavController) {
                 )
 
                 dias.forEach { dia ->
-                    Button(
+                    BotonPrincipal(
+                        texto = dia,
                         onClick = { navController.navigate("receta/$dia") },
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(64.dp),
-                        colors = ButtonDefaults.buttonColors(
-                            containerColor = MaterialTheme.colorScheme.primary
-                        )
-                    ) {
-                        Text(
-                            text = dia,
-                            style = MaterialTheme.typography.labelLarge,
-                            color = Color.White
-                        )
-                    }
+                        modifier = Modifier.fillMaxWidth()
+                    )
                 }
             }
         }

@@ -4,17 +4,20 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
+import com.example.s1_minutanutricional.data.Usuario
+import com.example.s1_minutanutricional.data.UsuariosData
+import com.example.s1_minutanutricional.ui.theme.PrimaryBlue
 
 @Composable
 fun RegisterScreen(navController: NavController) {
 
-    var nombre by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
+    var correo by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
-    var aceptaTerminos by remember { mutableStateOf(false) }
+    var confirmarPassword by remember { mutableStateOf("") }
+    var mensaje by remember { mutableStateOf("") }
 
     Column(
         modifier = Modifier
@@ -28,22 +31,9 @@ fun RegisterScreen(navController: NavController) {
             style = MaterialTheme.typography.headlineMedium
         )
 
-        Text(
-            text = "Complete los siguientes datos para crear su cuenta.",
-            style = MaterialTheme.typography.bodyLarge,
-            textAlign = TextAlign.Start
-        )
-
         OutlinedTextField(
-            value = nombre,
-            onValueChange = { nombre = it },
-            label = { Text("Nombre completo") },
-            modifier = Modifier.fillMaxWidth()
-        )
-
-        OutlinedTextField(
-            value = email,
-            onValueChange = { email = it },
+            value = correo,
+            onValueChange = { correo = it },
             label = { Text("Correo electrónico") },
             modifier = Modifier.fillMaxWidth()
         )
@@ -55,31 +45,59 @@ fun RegisterScreen(navController: NavController) {
             modifier = Modifier.fillMaxWidth()
         )
 
-        Row(
-            verticalAlignment = androidx.compose.ui.Alignment.CenterVertically
-        ) {
-            Checkbox(
-                checked = aceptaTerminos,
-                onCheckedChange = { aceptaTerminos = it }
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            Text("Acepto los términos y condiciones")
-        }
+        OutlinedTextField(
+            value = confirmarPassword,
+            onValueChange = { confirmarPassword = it },
+            label = { Text("Confirmar contraseña") },
+            modifier = Modifier.fillMaxWidth()
+        )
 
         Button(
             onClick = {
-                // Solo visual por ahora
-                navController.popBackStack()
+
+                mensaje = when {
+                    correo.isBlank() || password.isBlank() ->
+                        "Todos los campos son obligatorios"
+
+                    password != confirmarPassword ->
+                        "Las contraseñas no coinciden"
+
+                    else -> {
+                        val nuevoUsuario = Usuario(correo, password)
+                        UsuariosData.usuarios.add(nuevoUsuario)
+                        "Usuario registrado correctamente"
+                    }
+                }
             },
-            modifier = Modifier.fillMaxWidth().height(64.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(56.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = PrimaryBlue
+            )
+
         ) {
-            Text("Crear cuenta")
+            Text(
+                text = "Registrar",
+                style = MaterialTheme.typography.labelLarge
+            )
+        }
+
+        if (mensaje.isNotEmpty()) {
+            Text(
+                text = mensaje,
+                color = if (mensaje.contains("correctamente")) Color.Green else Color.Red,
+                style = MaterialTheme.typography.bodyLarge
+            )
         }
 
         TextButton(
             onClick = { navController.popBackStack() }
         ) {
-            Text("Volver al inicio")
+            Text(
+                text = "Volver",
+                style = MaterialTheme.typography.labelLarge
+            )
         }
     }
 }

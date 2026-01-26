@@ -21,7 +21,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.ui.unit.sp
 import com.example.s1_minutanutricional.data.UsuariosData
-
+import com.example.s1_minutanutricional.ui.components.BotonPrincipal
+import com.example.s1_minutanutricional.ui.theme.PrimaryBlue
 
 
 @Composable
@@ -97,7 +98,10 @@ fun LoginScreen(navController: NavController) {
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(56.dp)
+                        .height(56.dp),
+                    colors = ButtonDefaults.buttonColors(
+                        containerColor = PrimaryBlue
+                    )
                 ) {
                     Text(
                         text = "Ingresar",

@@ -7,6 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.text.style.TextAlign
 import androidx.navigation.NavController
+import com.example.s1_minutanutricional.ui.components.BotonPrincipal
+import com.example.s1_minutanutricional.ui.theme.PrimaryBlue
 
 @Composable
 fun RecoverScreen(navController: NavController) {
@@ -44,6 +46,9 @@ fun RecoverScreen(navController: NavController) {
                 navController.popBackStack()
             },
             modifier = Modifier.fillMaxWidth().height(64.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = PrimaryBlue
+            )
         ) {
             Text("Enviar",)
         }

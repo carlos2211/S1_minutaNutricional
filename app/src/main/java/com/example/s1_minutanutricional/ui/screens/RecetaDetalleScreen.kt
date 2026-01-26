@@ -13,6 +13,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.s1_minutanutricional.R
 import com.example.s1_minutanutricional.data.RecetasData
+import com.example.s1_minutanutricional.ui.components.BotonPrincipal
+import com.example.s1_minutanutricional.ui.theme.PrimaryBlue
 
 
 
@@ -26,7 +28,8 @@ fun RecetaDetalleScreen(
         painter = painterResource(id = R.drawable.fondo_card_detalle),
         contentDescription = null,
         modifier = Modifier.fillMaxSize(),
-        contentScale = ContentScale.FillBounds
+        contentScale = ContentScale.FillBounds,
+        alpha = 0.25f
     )
 
     val receta = RecetasData.recetas.find { it.dia == dia }
@@ -74,7 +77,10 @@ fun RecetaDetalleScreen(
             onClick = { navController.popBackStack() },
             modifier = Modifier
                 .fillMaxWidth()
-                .height(64.dp)
+                .height(64.dp),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = PrimaryBlue
+            )
         ) {
             Text(
                 text = "Volver",

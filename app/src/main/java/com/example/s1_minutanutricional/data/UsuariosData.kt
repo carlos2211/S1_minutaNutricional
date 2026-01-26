@@ -2,7 +2,7 @@ package com.example.s1_minutanutricional.data
 
 object UsuariosData {
 
-    val usuarios = listOf(
+    val usuarios = mutableListOf(
         Usuario("usuario1@gmail.com", "1234"),
         Usuario("usuario2@gmail.com", "5678"),
         Usuario("usuario3@gmail.com", "abcd"),
