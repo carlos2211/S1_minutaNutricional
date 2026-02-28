@@ -6,7 +6,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-// 🔹 Esquema CLARO - Azul nutricional
+//Esquema CLARO - Azul nutricional
 private val LightColorScheme = lightColorScheme(
     primary          = PrimaryBlue,
     onPrimary        = TextOnBlue,
@@ -21,7 +21,7 @@ private val LightColorScheme = lightColorScheme(
     error            = DangerRed
 )
 
-// 🔹 Esquema OSCURO
+//Esquema OSCURO
 private val DarkColorScheme = darkColorScheme(
     primary          = PrimaryBlueLight,
     onPrimary        = TextOnBlue,
@@ -39,7 +39,7 @@ private val DarkColorScheme = darkColorScheme(
 @Composable
 fun S1MinutaNutricionalTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = false, // 🔹 Desactivado para usar nuestra paleta siempre
+    dynamicColor: Boolean = false,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {

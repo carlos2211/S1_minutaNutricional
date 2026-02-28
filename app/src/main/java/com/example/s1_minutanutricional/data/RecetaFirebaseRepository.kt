@@ -13,15 +13,13 @@ import kotlinx.coroutines.tasks.await
 
 class RecetaFirebaseRepository {
 
-    // 🔹 Referencia a la base de datos Firebase
+    //base de datos Firebase
     private val database = FirebaseDatabase.getInstance()
     private val auth = FirebaseAuth.getInstance()
 
-    // 🔹 Nodo raíz donde se guardan las recetas del usuario actual
     private val recetasRef
         get() = database.getReference("usuarios/${auth.currentUser?.uid}/recetas")
 
-    // 🔹 Obtener todas las recetas en tiempo real como Flow
     fun obtenerRecetas(): Flow<List<Receta>> = callbackFlow {
         val listener = object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -40,28 +38,23 @@ class RecetaFirebaseRepository {
 
         recetasRef.addValueEventListener(listener)
 
-        // 🔹 Cancelar el listener cuando el Flow se cierra
         awaitClose { recetasRef.removeEventListener(listener) }
     }
 
-    // 🔹 Subir una receta a Firebase
     suspend fun guardarReceta(receta: Receta) {
         recetasRef.child(receta.id.toString()).setValue(receta).await()
     }
 
-    // 🔹 Subir lista de recetas (para poblar datos iniciales)
     suspend fun guardarTodasLasRecetas(recetas: List<Receta>) {
         recetas.forEach { receta ->
             recetasRef.child(receta.id.toString()).setValue(receta).await()
         }
     }
 
-    // 🔹 Eliminar una receta de Firebase
     suspend fun eliminarReceta(receta: Receta) {
         recetasRef.child(receta.id.toString()).removeValue().await()
     }
 
-    // 🔹 Verificar si ya hay recetas en Firebase (para no duplicar)
     suspend fun tieneRecetas(): Boolean {
         val snapshot = recetasRef.get().await()
         return snapshot.exists() && snapshot.childrenCount > 0

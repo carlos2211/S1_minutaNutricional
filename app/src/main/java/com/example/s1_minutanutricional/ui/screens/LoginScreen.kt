@@ -16,7 +16,6 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.s1_minutanutricional.R
 import com.example.s1_minutanutricional.ui.theme.PrimaryBlue
-// 🔹 Firebase Auth
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -27,10 +26,8 @@ fun LoginScreen(navController: NavController) {
     var errorMessage by remember { mutableStateOf("") }
     var isLoading by remember { mutableStateOf(false) }
 
-    // 🔹 Instancia de Firebase Auth
     val auth = FirebaseAuth.getInstance()
 
-    // 🔹 Si ya hay sesión activa, ir directo al menú
     LaunchedEffect(Unit) {
         if (auth.currentUser != null) {
             navController.navigate("menu") {
@@ -99,7 +96,7 @@ fun LoginScreen(navController: NavController) {
                         isLoading = true
                         errorMessage = ""
 
-                        // 🔹 Firebase Auth: iniciar sesión con email y password
+                        //iniciar sesión con email y password
                         auth.signInWithEmailAndPassword(email.trim(), password)
                             .addOnSuccessListener {
                                 isLoading = false

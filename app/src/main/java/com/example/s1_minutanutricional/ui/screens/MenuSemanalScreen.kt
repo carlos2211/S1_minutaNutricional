@@ -12,7 +12,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -21,11 +20,11 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import com.example.s1_minutanutricional.R
 import com.example.s1_minutanutricional.ui.components.BotonPrincipal
-import com.example.s1_minutanutricional.ui.theme.AccentGreenSoft
 import com.example.s1_minutanutricional.ui.theme.DangerRed
 import com.example.s1_minutanutricional.ui.theme.TextSecondary
 import com.example.s1_minutanutricional.ui.viewmodel.RecetaViewModel
 import com.google.firebase.auth.FirebaseAuth
+
 @Composable
 fun MenuSemanalScreen(
     navController: NavController,
@@ -134,19 +133,6 @@ fun MenuSemanalScreen(
                         unfocusedBorderColor = MaterialTheme.colorScheme.primary.copy(alpha = 0.4f)
                     )
                 )
-
-                Surface(
-                    shape = MaterialTheme.shapes.small,
-                    color = AccentGreenSoft,
-                    modifier = Modifier.wrapContentWidth()
-                ) {
-                    Text(
-                        text = "  ${recetasFiltradas.size} resultado${if (recetasFiltradas.size != 1) "s" else ""}  ",
-                        style = MaterialTheme.typography.labelMedium,
-                        color = MaterialTheme.colorScheme.secondary,
-                        modifier = Modifier.padding(vertical = 4.dp)
-                    )
-                }
 
                 if (recetasFiltradas.isEmpty()) {
                     Column(

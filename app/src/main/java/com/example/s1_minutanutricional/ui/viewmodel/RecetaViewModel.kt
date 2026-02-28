@@ -10,34 +10,42 @@ import com.example.s1_minutanutricional.model.Receta
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 
-class RecetaViewModel(application: Application) : AndroidViewModel(application) {
+class RecetaViewModel(
+    application: Application,
+    private val repository: RecetaRepository,
+    private val firebaseRepository: RecetaFirebaseRepository
+) : AndroidViewModel(application) {
 
-    private val repository: RecetaRepository
-    private val firebaseRepository = RecetaFirebaseRepository()
+    //onstructor secundario
+    constructor(application: Application) : this(
+        application,
+        RecetaRepository(
+            RecetaDatabase.getDatabase(application).recetaDao()
+        ),
+        RecetaFirebaseRepository()
+    )
 
-    // 🔹 Estado de sincronización con Firebase
+    //Estado sincronización
     private val _sincronizando = MutableStateFlow(false)
     val sincronizando: StateFlow<Boolean> = _sincronizando
 
     private val _mensajeSync = MutableStateFlow("")
     val mensajeSync: StateFlow<String> = _mensajeSync
 
-    // 🔹 Texto de búsqueda
+    //Texto búsqueda
     private val _textoBusqueda = MutableStateFlow("")
     val textoBusqueda: StateFlow<String> = _textoBusqueda
 
-    // 🔹 Recetas filtradas desde Room (fuente local)
-    val recetasFiltradas: StateFlow<List<Receta>>
-
-    init {
-        val dao = RecetaDatabase.getDatabase(application).recetaDao()
-        repository = RecetaRepository(dao)
-
-        recetasFiltradas = _textoBusqueda
+    //Recetas filtradas
+    val recetasFiltradas: StateFlow<List<Receta>> =
+        _textoBusqueda
             .debounce(300)
             .flatMapLatest { texto ->
-                if (texto.isBlank()) repository.todasLasRecetas
-                else repository.buscar(texto)
+                if (texto.isBlank()) {
+                    repository.todasLasRecetas
+                } else {
+                    repository.buscar(texto)
+                }
             }
             .stateIn(
                 scope = viewModelScope,
@@ -45,7 +53,7 @@ class RecetaViewModel(application: Application) : AndroidViewModel(application) 
                 initialValue = emptyList()
             )
 
-        // 🔹 Al iniciar, sincronizar Firebase → Room
+    init {
         sincronizarDesdeFirebase()
     }
 
@@ -53,7 +61,7 @@ class RecetaViewModel(application: Application) : AndroidViewModel(application) 
         _textoBusqueda.value = texto
     }
 
-    // 🔹 Sincronizar recetas desde Firebase a Room local
+    //Sincronizar Firebase → Room
     private fun sincronizarDesdeFirebase() {
         viewModelScope.launch {
             try {
@@ -61,15 +69,15 @@ class RecetaViewModel(application: Application) : AndroidViewModel(application) 
 
                 firebaseRepository.obtenerRecetas()
                     .collect { recetasFirebase ->
+
                         if (recetasFirebase.isNotEmpty()) {
-                            // 🔹 Firebase tiene datos → guardar en Room local
                             recetasFirebase.forEach { receta ->
                                 repository.insertar(receta)
                             }
                         } else {
-                            // 🔹 Firebase vacío → subir recetas locales a Firebase
                             subirRecetasLocalesAFirebase()
                         }
+
                         _sincronizando.value = false
                     }
 
@@ -80,36 +88,42 @@ class RecetaViewModel(application: Application) : AndroidViewModel(application) 
         }
     }
 
-    // 🔹 Subir recetas de Room a Firebase (primera vez)
+    //Subir locales a Firebase
     private suspend fun subirRecetasLocalesAFirebase() {
         val recetasLocales = repository.todasLasRecetas.first()
+
         if (recetasLocales.isNotEmpty()) {
             firebaseRepository.guardarTodasLasRecetas(recetasLocales)
-            _mensajeSync.value = "✅ Recetas sincronizadas con Firebase"
+            _mensajeSync.value = "Recetas sincronizadas con Firebase"
         }
     }
 
-    // 🔹 Insertar receta en Room Y Firebase
+    //CRUD
+
     fun insertar(receta: Receta) {
         viewModelScope.launch {
             repository.insertar(receta)
-            try { firebaseRepository.guardarReceta(receta) } catch (_: Exception) {}
+            try {
+                firebaseRepository.guardarReceta(receta)
+            } catch (_: Exception) {}
         }
     }
 
-    // 🔹 Actualizar receta en Room Y Firebase
     fun actualizar(receta: Receta) {
         viewModelScope.launch {
             repository.actualizar(receta)
-            try { firebaseRepository.guardarReceta(receta) } catch (_: Exception) {}
+            try {
+                firebaseRepository.guardarReceta(receta)
+            } catch (_: Exception) {}
         }
     }
 
-    // 🔹 Eliminar receta en Room Y Firebase
     fun eliminar(receta: Receta) {
         viewModelScope.launch {
             repository.eliminar(receta)
-            try { firebaseRepository.eliminarReceta(receta) } catch (_: Exception) {}
+            try {
+                firebaseRepository.eliminarReceta(receta)
+            } catch (_: Exception) {}
         }
     }
 

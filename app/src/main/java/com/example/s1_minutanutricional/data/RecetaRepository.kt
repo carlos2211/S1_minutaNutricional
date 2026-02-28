@@ -5,7 +5,7 @@ import kotlinx.coroutines.flow.Flow
 
 class RecetaRepository(private val dao: RecetaDao) {
 
-    // Obtener todas las recetas como Flow (se actualiza automáticamente)
+    // Obtener todas las recetas
     val todasLasRecetas: Flow<List<Receta>> = dao.obtenerTodas()
 
     //Buscar recetas por texto

@@ -27,7 +27,7 @@ class MinutaWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         widgetId: Int
     ) {
-        // 🔹 Intent que abre la app al tocar el widget
+        //Intent que abre la app al tocar el widget
         val intent = Intent(context, MainActivity::class.java)
         val pendingIntent = PendingIntent.getActivity(
             context,

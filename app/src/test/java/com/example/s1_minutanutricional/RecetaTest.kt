@@ -1,7 +1,5 @@
 package com.example.s1_minutanutricional
 
-// 📁 Guardar en: src/test/java/com/example/s1_minutanutricional/RecetaTest.kt
-
 import com.example.s1_minutanutricional.model.Receta
 import org.junit.Assert.*
 import org.junit.Before
@@ -9,7 +7,6 @@ import org.junit.Test
 
 class RecetaTest {
 
-    // 🔹 Lista de recetas de prueba (se inicializa antes de cada test)
     private lateinit var recetas: List<Receta>
 
     @Before
@@ -42,7 +39,7 @@ class RecetaTest {
         )
     }
 
-    // ✅ TEST 1: Verificar que el modelo Receta se crea correctamente
+    //Verificar que el modelo Receta se crea correctamente
     @Test
     fun receta_creadaCorrectamente() {
         val receta = Receta(
@@ -59,7 +56,7 @@ class RecetaTest {
         assertNotNull(receta.ingredientes)
     }
 
-    // ✅ TEST 2: Verificar que los valores por defecto son cadenas vacías
+    //Verificar que los valores por defecto son cadenas vacías
     @Test
     fun receta_valoresPorDefecto_sonVacios() {
         val receta = Receta()
@@ -70,7 +67,7 @@ class RecetaTest {
         assertEquals(0, receta.id)
     }
 
-    // ✅ TEST 3: Filtrar recetas por nombre
+    //Filtrar recetas por nombre
     @Test
     fun filtrarRecetas_porNombre_retornaResultadosCorrecto() {
         val resultado = recetas.filter {
@@ -81,7 +78,7 @@ class RecetaTest {
         assertEquals("Ensalada de pollo", resultado[0].nombre)
     }
 
-    // ✅ TEST 4: Filtrar recetas por día
+    //Filtrar recetas por día
     @Test
     fun filtrarRecetas_porDia_retornaResultadoCorrecto() {
         val resultado = recetas.filter {
@@ -92,7 +89,7 @@ class RecetaTest {
         assertEquals("Pescado al horno", resultado[0].nombre)
     }
 
-    // ✅ TEST 5: Búsqueda vacía retorna todas las recetas
+    //Búsqueda vacía retorna todas las recetas
     @Test
     fun filtrarRecetas_busquedaVacia_retornaTodas() {
         val textoBusqueda = ""
@@ -102,7 +99,7 @@ class RecetaTest {
         assertEquals(3, resultado.size)
     }
 
-    // ✅ TEST 6: Búsqueda sin resultados retorna lista vacía
+    //Búsqueda sin resultados retorna lista vacía
     @Test
     fun filtrarRecetas_sinCoincidencias_retornaListaVacia() {
         val resultado = recetas.filter {
@@ -112,7 +109,7 @@ class RecetaTest {
         assertTrue(resultado.isEmpty())
     }
 
-    // ✅ TEST 7: Filtro es case-insensitive (mayúsculas/minúsculas)
+    //Filtro es case-insensitive (mayúsculas/minúsculas)
     @Test
     fun filtrarRecetas_caseInsensitive_funcionaCorrectamente() {
         val resultadoMinusculas = recetas.filter {
@@ -125,7 +122,7 @@ class RecetaTest {
         assertEquals(resultadoMinusculas.size, resultadoMayusculas.size)
     }
 
-    // ✅ TEST 8: Verificar que cada receta tiene día único
+    //Verificar que cada receta tiene día único
     @Test
     fun recetas_diasSonUnicos() {
         val dias = recetas.map { it.dia }
@@ -134,7 +131,7 @@ class RecetaTest {
         assertEquals(dias.size, diasUnicos.size)
     }
 
-    // ✅ TEST 9: Ningún campo obligatorio está vacío en las recetas de prueba
+    //Ningún campo obligatorio está vacío en las recetas de prueba
     @Test
     fun recetas_camposObligatorios_noEstanVacios() {
         recetas.forEach { receta ->
@@ -145,7 +142,7 @@ class RecetaTest {
         }
     }
 
-    // ✅ TEST 10: Verificar búsqueda combinada por nombre O día
+    //Verificar búsqueda combinada por nombre O día
     @Test
     fun filtrarRecetas_porNombreODia_retornaAmbos() {
         val textoBusqueda = "Miércoles"

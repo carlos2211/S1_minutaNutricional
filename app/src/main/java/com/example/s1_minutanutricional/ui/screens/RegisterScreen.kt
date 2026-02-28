@@ -21,7 +21,7 @@ fun RegisterScreen(navController: NavController) {
     var isLoading by remember { mutableStateOf(false) }
     var esExito by remember { mutableStateOf(false) }
 
-    // 🔹 Instancia de Firebase Auth
+    //Instancia de Firebase Auth
     val auth = FirebaseAuth.getInstance()
 
     Column(
@@ -62,7 +62,6 @@ fun RegisterScreen(navController: NavController) {
 
         Button(
             onClick = {
-                // 🔹 Validaciones locales antes de llamar a Firebase
                 mensaje = when {
                     correo.isBlank() || password.isBlank() ->
                         "Todos los campos son obligatorios"
@@ -77,12 +76,12 @@ fun RegisterScreen(navController: NavController) {
 
                 isLoading = true
 
-                // 🔹 Firebase Auth: crear usuario con email y password
+                //crear usuario con email y password
                 auth.createUserWithEmailAndPassword(correo.trim(), password)
                     .addOnSuccessListener {
                         isLoading = false
                         esExito = true
-                        mensaje = "✅ Usuario registrado correctamente"
+                        mensaje = " Usuario registrado correctamente"
                     }
                     .addOnFailureListener { exception ->
                         isLoading = false
@@ -124,7 +123,7 @@ fun RegisterScreen(navController: NavController) {
             )
         }
 
-        // 🔹 Si se registró bien, mostrar botón para ir al login
+        //Si se registró bien, mostrar botón para ir al login
         if (esExito) {
             Button(
                 onClick = { navController.popBackStack() },

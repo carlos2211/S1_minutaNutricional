@@ -9,7 +9,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.s1_minutanutricional.ui.theme.PrimaryBlue
-// 🔹 Firebase Auth
+//Firebase Auth
 import com.google.firebase.auth.FirebaseAuth
 
 @Composable
@@ -20,7 +20,7 @@ fun RecoverScreen(navController: NavController) {
     var isLoading by remember { mutableStateOf(false) }
     var esExito by remember { mutableStateOf(false) }
 
-    // 🔹 Instancia de Firebase Auth
+    //Instancia de Firebase Auth
     val auth = FirebaseAuth.getInstance()
 
     Column(
@@ -59,7 +59,7 @@ fun RecoverScreen(navController: NavController) {
                 isLoading = true
                 mensaje = ""
 
-                // 🔹 Firebase Auth: enviar email de recuperación
+                //enviar email de recuperación
                 auth.sendPasswordResetEmail(email.trim())
                     .addOnSuccessListener {
                         isLoading = false

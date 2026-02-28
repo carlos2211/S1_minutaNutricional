@@ -7,7 +7,7 @@ import androidx.compose.ui.unit.sp
 
 val Typography = Typography(
 
-    // 🔹 Títulos de pantalla (ej: "Minuta semanal", nombre de receta)
+    //Títulos de pantalla
     headlineMedium = TextStyle(
         fontSize    = 28.sp,
         fontWeight  = FontWeight.ExtraBold,
@@ -21,7 +21,7 @@ val Typography = Typography(
         lineHeight  = 28.sp
     ),
 
-    // 🔹 Subtítulos (ej: "Ingredientes:", "Preparación:")
+    //Subtítulos
     titleMedium = TextStyle(
         fontSize    = 18.sp,
         fontWeight  = FontWeight.Bold,
@@ -35,7 +35,7 @@ val Typography = Typography(
         lineHeight  = 22.sp
     ),
 
-    // 🔹 Cuerpo de texto (ej: ingredientes, preparación)
+    //Cuerpo de texto
     bodyLarge = TextStyle(
         fontSize    = 16.sp,
         fontWeight  = FontWeight.Normal,
@@ -54,7 +54,6 @@ val Typography = Typography(
         lineHeight  = 18.sp
     ),
 
-    // 🔹 Etiquetas (ej: botones, labels)
     labelLarge = TextStyle(
         fontSize    = 16.sp,
         fontWeight  = FontWeight.Bold,

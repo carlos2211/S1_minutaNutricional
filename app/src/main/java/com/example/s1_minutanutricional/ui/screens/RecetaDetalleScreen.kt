@@ -36,7 +36,7 @@ fun RecetaDetalleScreen(
     var receta by remember { mutableStateOf<Receta?>(null) }
     val scrollState = rememberScrollState()
 
-    // 🔹 URL de imagen desde Unsplash (gratis, sin Firebase Storage)
+    // URL de imagen desde Unsplash (sin Firebase Storage por es de pago)
     val imageUrl = remember(dia) { RecetaImagenes.obtenerUrl(dia) }
 
     LaunchedEffect(dia) {
@@ -56,14 +56,14 @@ fun RecetaDetalleScreen(
                     .verticalScroll(scrollState)
             ) {
 
-                // 🔹 IMAGEN del día
+                //imagen del día
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(220.dp)
                 ) {
                     if (imageUrl != null) {
-                        // 🔹 Cargar imagen desde URL con Coil
+                        // imagen desde URL con Coil
                         AsyncImage(
                             model = ImageRequest.Builder(LocalContext.current)
                                 .data(imageUrl)
@@ -84,7 +84,6 @@ fun RecetaDetalleScreen(
                         )
                     }
 
-                    // 🔹 Overlay con título sobre la imagen
                     Box(
                         modifier = Modifier
                             .fillMaxSize()
@@ -109,7 +108,6 @@ fun RecetaDetalleScreen(
                     }
                 }
 
-                // 🔹 CONTENIDO
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()

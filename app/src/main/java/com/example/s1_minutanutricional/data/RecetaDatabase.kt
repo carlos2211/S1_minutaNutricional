@@ -35,7 +35,7 @@ abstract class RecetaDatabase : RoomDatabase() {
         }
     }
 
-    // 🔹 Callback para poblar la DB con datos iniciales al crearla por primera vez
+    //Callback para poblar la DB con datos iniciales al crearla por primera vez
     private class RecetaCallback : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
