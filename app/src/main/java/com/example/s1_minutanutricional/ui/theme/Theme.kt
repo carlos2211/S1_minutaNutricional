@@ -2,30 +2,44 @@ package com.example.s1_minutanutricional.ui.theme
 
 import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.darkColorScheme
-import androidx.compose.material3.dynamicDarkColorScheme
-import androidx.compose.material3.dynamicLightColorScheme
-import androidx.compose.material3.lightColorScheme
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-private val DarkColorScheme = darkColorScheme(
-    primary = Purple80,
-    secondary = PurpleGrey80,
-    tertiary = Pink80
+// 🔹 Esquema CLARO - Azul nutricional
+private val LightColorScheme = lightColorScheme(
+    primary          = PrimaryBlue,
+    onPrimary        = TextOnBlue,
+    primaryContainer = PrimaryBlueLight,
+    secondary        = AccentGreen,
+    onSecondary      = TextOnBlue,
+    tertiary         = AccentGreenLight,
+    background       = SurfaceLight,
+    surface          = CardLight,
+    onSurface        = TextPrimary,
+    onSurfaceVariant = TextSecondary,
+    error            = DangerRed
 )
 
-private val LightColorScheme = lightColorScheme(
-    primary = Purple40,
-    secondary = PurpleGrey40,
-    tertiary = Pink40
+// 🔹 Esquema OSCURO
+private val DarkColorScheme = darkColorScheme(
+    primary          = PrimaryBlueLight,
+    onPrimary        = TextOnBlue,
+    primaryContainer = PrimaryBlueDark,
+    secondary        = AccentGreenLight,
+    onSecondary      = TextOnBlue,
+    tertiary         = AccentGreen,
+    background       = SurfaceDark,
+    surface          = CardDark,
+    onSurface        = OnSurfaceDark,
+    onSurfaceVariant = OnSurfaceDark,
+    error            = DangerRed
 )
 
 @Composable
 fun S1MinutaNutricionalTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    dynamicColor: Boolean = true,
+    dynamicColor: Boolean = false, // 🔹 Desactivado para usar nuestra paleta siempre
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -34,12 +48,12 @@ fun S1MinutaNutricionalTheme(
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
         darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+        else      -> LightColorScheme
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography = Typography,
-        content = content
+        typography  = Typography,
+        content     = content
     )
 }

@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- 📁 Guardar en: res/layout/widget_minuta.xml -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@drawable/widget_background"
+    android:padding="12dp"
+    android:gravity="center">
+
+    <!-- Ícono o emoji decorativo -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="🥗"
+        android:textSize="28sp"
+        android:layout_marginBottom="4dp" />
+
+    <!-- Nombre de la app -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Minuta Nutricional"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:textColor="#FFFFFF"
+        android:layout_marginBottom="6dp" />
+
+    <!-- Botón de acceso rápido -->
+    <TextView
+        android:id="@+id/widget_btn_abrir"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Ver menú semanal"
+        android:textSize="12sp"
+        android:textColor="#FFFFFF"
+        android:background="@drawable/widget_button_bg"
+        android:paddingStart="12dp"
+        android:paddingEnd="12dp"
+        android:paddingTop="6dp"
+        android:paddingBottom="6dp" />
+
+</LinearLayout>

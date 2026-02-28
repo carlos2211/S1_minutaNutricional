@@ -7,9 +7,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import com.example.s1_minutanutricional.data.Usuario
-import com.example.s1_minutanutricional.data.UsuariosData
 import com.example.s1_minutanutricional.ui.theme.PrimaryBlue
+// 🔹 Firebase Auth
+import com.google.firebase.auth.FirebaseAuth
 
 @Composable
 fun RegisterScreen(navController: NavController) {
@@ -18,6 +18,11 @@ fun RegisterScreen(navController: NavController) {
     var password by remember { mutableStateOf("") }
     var confirmarPassword by remember { mutableStateOf("") }
     var mensaje by remember { mutableStateOf("") }
+    var isLoading by remember { mutableStateOf(false) }
+    var esExito by remember { mutableStateOf(false) }
+
+    // 🔹 Instancia de Firebase Auth
+    val auth = FirebaseAuth.getInstance()
 
     Column(
         modifier = Modifier
@@ -35,69 +40,103 @@ fun RegisterScreen(navController: NavController) {
             value = correo,
             onValueChange = { correo = it },
             label = { Text("Correo electrónico") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
         )
 
         OutlinedTextField(
             value = password,
             onValueChange = { password = it },
             label = { Text("Contraseña") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
         )
 
         OutlinedTextField(
             value = confirmarPassword,
             onValueChange = { confirmarPassword = it },
             label = { Text("Confirmar contraseña") },
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            singleLine = true
         )
 
         Button(
             onClick = {
-
+                // 🔹 Validaciones locales antes de llamar a Firebase
                 mensaje = when {
                     correo.isBlank() || password.isBlank() ->
                         "Todos los campos son obligatorios"
-
                     password != confirmarPassword ->
                         "Las contraseñas no coinciden"
-
-                    else -> {
-                        val nuevoUsuario = Usuario(correo, password)
-                        UsuariosData.usuarios.add(nuevoUsuario)
-                        "Usuario registrado correctamente"
-                    }
+                    password.length < 6 ->
+                        "La contraseña debe tener al menos 6 caracteres"
+                    else -> ""
                 }
+
+                if (mensaje.isNotEmpty()) return@Button
+
+                isLoading = true
+
+                // 🔹 Firebase Auth: crear usuario con email y password
+                auth.createUserWithEmailAndPassword(correo.trim(), password)
+                    .addOnSuccessListener {
+                        isLoading = false
+                        esExito = true
+                        mensaje = "✅ Usuario registrado correctamente"
+                    }
+                    .addOnFailureListener { exception ->
+                        isLoading = false
+                        esExito = false
+                        mensaje = when {
+                            exception.message?.contains("already in use") == true ->
+                                "Este correo ya está registrado"
+                            exception.message?.contains("badly formatted") == true ->
+                                "Formato de correo inválido"
+                            else -> "Error al registrar. Intenta de nuevo"
+                        }
+                    }
             },
             modifier = Modifier
                 .fillMaxWidth()
                 .height(56.dp),
-            colors = ButtonDefaults.buttonColors(
-                containerColor = PrimaryBlue
-            )
-
+            colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue),
+            enabled = !isLoading
         ) {
-            Text(
-                text = "Registrar",
-                style = MaterialTheme.typography.labelLarge
-            )
+            if (isLoading) {
+                CircularProgressIndicator(
+                    color = Color.White,
+                    modifier = Modifier.size(24.dp),
+                    strokeWidth = 2.dp
+                )
+            } else {
+                Text(
+                    text = "Registrar",
+                    style = MaterialTheme.typography.labelLarge
+                )
+            }
         }
 
         if (mensaje.isNotEmpty()) {
             Text(
                 text = mensaje,
-                color = if (mensaje.contains("correctamente")) Color.Green else Color.Red,
-                style = MaterialTheme.typography.bodyLarge
+                color = if (esExito) Color(0xFF2E7D32) else Color.Red,
+                style = MaterialTheme.typography.bodyMedium
             )
         }
 
-        TextButton(
-            onClick = { navController.popBackStack() }
-        ) {
-            Text(
-                text = "Volver",
-                style = MaterialTheme.typography.labelLarge
-            )
+        // 🔹 Si se registró bien, mostrar botón para ir al login
+        if (esExito) {
+            Button(
+                onClick = { navController.popBackStack() },
+                modifier = Modifier.fillMaxWidth().height(56.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = PrimaryBlue)
+            ) {
+                Text("Ir al Login", style = MaterialTheme.typography.labelLarge)
+            }
+        }
+
+        TextButton(onClick = { navController.popBackStack() }) {
+            Text(text = "Volver", style = MaterialTheme.typography.labelLarge)
         }
     }
 }

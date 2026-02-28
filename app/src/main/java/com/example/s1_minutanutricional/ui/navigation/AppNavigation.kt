@@ -10,7 +10,11 @@ import androidx.navigation.navArgument
 import com.example.s1_minutanutricional.ui.screens.*
 
 @Composable
-fun AppNavigation() {
+fun AppNavigation(
+    darkMode: Boolean,
+    onToggleDarkMode: () -> Unit
+) {
+
     val navController = rememberNavController()
 
     NavHost(
@@ -31,7 +35,11 @@ fun AppNavigation() {
         }
 
         composable("menu") {
-            MenuSemanalScreen(navController)
+            MenuSemanalScreen(
+                navController = navController,
+                onToggleDarkMode = onToggleDarkMode,
+                isDarkMode = darkMode
+            )
         }
 
         composable(
